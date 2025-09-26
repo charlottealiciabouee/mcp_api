@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from app.routers import health, inference
+from app.routers import health, inference # type: ignore
 
 # Create the app 
 app = FastAPI()
 
 # Include health and inference routers in the main app
 app.include_router(health.router)
-#app.include_router(inference.router)
+app.include_router(inference.router)
 
 @app.get("/")
 def root():

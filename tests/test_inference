@@ -1,0 +1,10 @@
+from fastapi.testclient import TestClient
+from app.main import app # type: ignore
+
+client = TestClient(app)
+
+def test_inference():
+    " Testing the inference endpoint "
+    response = client.post("/inference", json={"input_data": "test input"})
+    assert response.status_code == 200
+    assert response.json() == {"output": "Inferred: test input"}
