@@ -26,19 +26,27 @@ inference_router = APIRouter()
 class Inference(BaseModel):
     input_data: str
 
-@inference_router.post("/inference", status_code=200)
+@inference_router.post("/inference", status_code=201)
 async def process_inference(request: Inference):
-    """
-    Accepts a POST request to perform inference on the data provided by the client.
-    """
     try:
-        # Exemple de résultat simulé
         return {
             "input": request.input_data,
             "output": f"Inferred: {request.input_data}"
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur : {e}")
+
+@inference_router.put("/inference/{item_id}", status_code=200)
+async def update_inference(item_id: int, data: Inference):
+    return {
+        "item_id": item_id,
+        "updated_data": data.input_data,
+        "message": "Item successfully updated!"
+    }
+
+@inference_router.delete("/inference/{item_id}", status_code=200)
+async def delete_inference(item_id: int):
+    return {"message": f"Item {item_id} successfully deleted."}
 
 inference_endpoint = 'http://127.0.0.1:8000/inference'
 
