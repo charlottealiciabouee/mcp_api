@@ -1,0 +1,10 @@
+global:
+  env:
+    NODE_ENV: "integration"
+    PORT: "8000"
+    MCP_SERVER_NAME: "mcp-api"
+    # URL publique pour les applications tierces
+    PUBLIC_MCP_URL: "https://mcp-api.int.inno.vptech.eu"
+  # secrets:
+  #   SLACK_BOT_TOKEN: "vault:products/data/prd/inno/veepeechat/slack#SLACK_BOT_TOKEN"
+  #   API_ACCESS_TOKEN: "vault:products/data/prd/inno/veepeechat/slack#MCP_API_ACCESS_TOKEN"

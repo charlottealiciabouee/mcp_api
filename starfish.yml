@@ -1,0 +1,23 @@
+---
+config:
+  ci:
+    deployAllAtOnce: false
+
+applications:
+  mcp-api:
+    applicationPath: .
+    ciConfig:
+      build:
+        enable: true
+        dockerFilePath: ./Dockerfile
+        dockerContextPath: ./
+    locations:
+      staging:
+        zoneList:
+          - fr1
+      production:
+        zoneList:
+          - fr1
+      integration:
+        zoneList:
+          - fr1

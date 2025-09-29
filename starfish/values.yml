@@ -1,0 +1,45 @@
+---
+# Full reference is at https://veepee.pages.vptech.eu/vptech/sre/iac/helm-charts/workload-server/values/
+imagePullSecrets:
+  - name: "registry-creds"
+
+replicaCount: 1 # Number of pods (instances) of your application
+branchInjection: hostSuffix
+
+nodeSelector:
+  tag_affinity: "default"
+  
+
+containers: # List of containers in your pod
+  main: # mandatory container name
+    securityContext:
+      runAsNonRoot: true # run as non-privileged user
+      runAsUser: 100001 # uid running the application
+      runAsGroup: 10001
+    exposure: # how do we expose the application
+      - name: http # the port name, you can let http or set anything else if you like
+        targetPort: 8000 # application listening port
+        protocol: TCP # don't touch this unless you know what you're doing
+        ingressSecurity:
+          private: https # deploy with https only
+    resources: # reserve some cpu/ram resources for your app
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 1024Mi
+    livenessProbe: # Probe that will check if your application is alive
+      enabled: true
+      method: httpGet # Use HTTP health check endpoint
+      port: 8000 # Port to check, must match the one defined in exposure.targetPort
+      path: /health # Health check endpoint (corrigé)
+      initialDelaySeconds: 30 # Wait 30s before first check
+      periodSeconds: 10 # Check every 10s
+    readinessProbe: # Probe that will check if your application is ready to receive traffic
+      enabled: true
+      method: httpGet
+      port: 8000
+      path: /health # Health check endpoint (corrigé)
+      initialDelaySeconds: 5 # Wait 5s before first check
+      periodSeconds: 5 # Check every 5s
